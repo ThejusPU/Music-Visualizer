@@ -12,3 +12,6 @@ http://wiki.openmusiclabs.com/wiki/FHTExample
 
 theory on sound analysis & arduinoFHT:
 https://blog.yavilevich.com/2016/08/arduino-sound-level-meter-and-spectrum-analyzer/
+
+combining left & right audio properly:
+https://www.instructables.com/community/Connecting-left-and-right-audio-channels-together/
