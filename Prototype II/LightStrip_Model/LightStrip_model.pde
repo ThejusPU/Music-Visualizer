@@ -177,7 +177,7 @@ class LightStrip extends PApplet {
     float val;
     for (int x = 0; x < numL; x++) {
       val = LED[x] / max;
-      if (val > 0.35) {
+      if (val > 0.2) {
         fill(red(cLED[x]) * val, green(cLED[x]) * val, blue(cLED[x]) * val);
         rect(x * LED_WIDTH, 0, (x + 1) * LED_WIDTH, WINDOW_HEIGHT);
       }
@@ -243,4 +243,9 @@ class LightStrip extends PApplet {
     }
     return max;
   }
+  
+  void octaveVolumes() {
+    
+  }
+  
 }
