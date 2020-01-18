@@ -106,7 +106,7 @@ void setup()
 void draw() 
 { 
   int count=0;
-
+  
   draw_grid();
 
   for (int i=0; i<FHT_N_2; i++)
@@ -171,13 +171,13 @@ class LightStrip extends PApplet {
   
   void frequency2strip() {
     //updateLED_Octaves(inBuffer);
-    updateLED_inRange(inBuffer, 2, 127);
-    float max = findMax(64);
+    updateLED_inRange(inBuffer, 4, 90);
+    float max = findMax(128);
     
     float val;
     for (int x = 0; x < numL; x++) {
       val = LED[x] / max;
-      if (val > 0.15) {
+      if (val > 0.35) {
         fill(red(cLED[x]) * val, green(cLED[x]) * val, blue(cLED[x]) * val);
         rect(x * LED_WIDTH, 0, (x + 1) * LED_WIDTH, WINDOW_HEIGHT);
       }
