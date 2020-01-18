@@ -165,49 +165,82 @@ class LightStrip extends PApplet {
   
   void draw() {
     
-    updateLED(inBuffer);
+    frequency2strip();
     
+  }
+  
+  void frequency2strip() {
+    //updateLED_Octaves(inBuffer);
+    updateLED_inRange(inBuffer, 2, 127);
+    float max = findMax(64);
+    
+    float val;
     for (int x = 0; x < numL; x++) {
-      fill(red(cLED[x]) * LED[x], green(cLED[x]) * LED[x], blue(cLED[x]) * LED[x]);
-      rect(x * LED_WIDTH, 0, (x + 1) * LED_WIDTH, WINDOW_HEIGHT);
+      val = LED[x] / max;
+      if (val > 0.15) {
+        fill(red(cLED[x]) * val, green(cLED[x]) * val, blue(cLED[x]) * val);
+        rect(x * LED_WIDTH, 0, (x + 1) * LED_WIDTH, WINDOW_HEIGHT);
+      }
+      else {
+        fill(0);
+        rect(x * LED_WIDTH, 0, (x + 1) * LED_WIDTH, WINDOW_HEIGHT);
+      }
     }
   }
   
-  void updateLED(int[] l) {
+  void updateLED_Octaves(int[] l) {
     int currLED = 0;
     int runSum = 0;
     int count = 0;
     for (int x = 2; x < l.length; x++) {
-      //scaled to octaves
-      //int intLED = 36 * (int)log(x) - 25;
+      int intLED = 36 * (int)log(x) - 25;
       
-      //scaled linearly
-      int intLED = (int) (1.192 * x - 2.384);
       if (intLED < 0) {
         intLED = 0;
       }
       runSum += l[x] * l[x];
       count++;
-      if (intLED >= currLED) {
+      if (intLED >= currLED + 1) {
         for (int y = currLED; y < intLED; y++) {
-          LED[y] = (sqrt(runSum / count) / l[0]) * 1.5;
-          if (LED[y] > 1) {
-            LED[y] = 1;
-          }
-          print(y + " ");
+          LED[y] = sqrt(runSum / count);
         }
         currLED = intLED;
         runSum = 0;
         count = 0;
       }
-      println("");
     }
     
-    //for (int y = currLED; y < LED.length; y++) {
-    //  LED[y] = (sqrt(runSum / count) / l[0]) * 1.5;
-    //  if (LED[y] > 1) {
-    //    LED[y] = 1;
-    //  }
-    //}
+    for (int y = currLED; y < LED.length; y++) {
+      LED[y] = sqrt(runSum / count);
+    }
+  }
+  
+  /* scaled linearly across frequency indeces low - high
+   * low > 0 & high < 127
+   */
+  void updateLED_inRange(int[] l, float low, float high) {
+    float m = numL / (high - low);
+    float b = m * low;
+    int currFreq = (int) low;
+    float prevPerc;
+    float currPerc;
+    for (int x = 0; x < numL; x++) {
+      prevPerc = currFreq - ((x + b) / m);
+      currPerc = ((x + b + 1) / m) - currFreq;
+      LED[x] = l[currFreq - 1] * prevPerc + l[currFreq] * currPerc;
+      if ((int)((x + b + 2) / m) != currFreq) {
+        currFreq++;
+      }
+    }
+  }
+  
+  float findMax(int maxPoss) {
+    float max = maxPoss;
+    for (int x = 3; x < LED.length; x++) {
+      if (LED[x] > max) {
+        max = LED[x];
+      }
+    }
+    return max;
   }
 }
