@@ -1,8 +1,12 @@
 ## Prototype II (2020)
 
-With iOS now allowing me to connect to multiple bluetooth devices, I am using an audio bluetooth module on my board to collect the audio data wirelessly. I'll probably call Apple and complain in order to bring back bluetooth compatability to devices outside their "ecosystem" of H1 and W1 chips, because the capability exists (there are youtube videos proving so) and it's simply an uncalled for power move to limit user scope. If they don't, then I'll just have to use multiple devices and the app ampME to connect to multiple devices, which is just so inconvenient >:(.
+I intended to use a bluetooth chip to connect the music to multiple devices (speaker and LED device), but Apple has limited the scope of products that can be connected at the same time to an Apple device, to only Apple devices. Devices with either the H1 or W1 chip. So I acquired a microphone, because progress must continue.
 
-AmpMe isn't all that great, so I have decided to downgrade and buy a microphone, because progress must go on >:). Also to better create the visualizer and analyze the data I have decided to learn Processing which can read and analyze the data through my serial ports and 
+For this prototype I wanted to implement the ArduinoFHT library I had found previously. Fast Hartley Transformation (FHT) is a method to implement Discrete Hartley Transoformation quickly, so that it may be run on low processing speed computer systems, like arduinos.
+
+To better create the visualizer and analyze the data I have decided to learn Processing which can read and analyze the data through my serial ports and create a visualization for how the LED lights are going to behave. Processing has been very useful for prototyping different methods of music visualization.
+
+This prototype never got physically manifested, because the managing the LED lights as well as running ArduinoFHT on a singular arduino would slow down the entire system. Prototype III tackles this problem.
 
 # Resources
 theory on sound analysis & arduinoFHT:

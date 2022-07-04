@@ -7,7 +7,6 @@ with the fht. the data is sent out over the serial
 port at 115.2kb.  there is a pure data patch for
 visualizing the data.
 */
-
 #define LOG_OUT 0 // use the log output function
 #define LIN_OUT 0
 #define LIN_OUT8 0
@@ -17,12 +16,32 @@ visualizing the data.
 #define OCT_NORM 1
 #include <FHT.h>
 
+#define SLAVE_ADDR 9
+#include <Wire.h>
+
 void setup() {
-  Serial.begin(115200); // use the serial port
+
+  Wire.begin(SLAVE_ADDR);
+
+  Wire.onRequest(requestEvent);
+  
   TIMSK0 = 0; // turn off timer0 for lower jitter
   ADCSRA = 0xe5; // set the adc to free running mode
   ADMUX = 0x40; // use adc0
   DIDR0 = 0x01; // turn off the digital input for adc0
+}
+
+void requestEvent() {
+
+  byte response[6];
+
+  for (byte x = 0; x < 6; x++) {
+    if (fht_oct_out[x + 2] > 254) response[x] = 254;
+    else response[x] = fht_oct_out[x + 2];
+  }
+
+  Wire.write(response, sizeof(response));
+
 }
 
 void loop() {
@@ -43,7 +62,6 @@ void loop() {
     fht_run(); // process the data in the fht
     fht_mag_octave(); // take the output of the fht
     sei();
-    Serial.write(255); // send a start byte
-    Serial.write(fht_oct_out, 8); // send out the data
+    
   }
 }
